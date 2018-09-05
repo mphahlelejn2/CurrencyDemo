@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:touchscreenBlocksFocus="true">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/spots_dialog_color"
+        android:fontFamily="monospace"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Convert Currency"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:text="From"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Spinner
+        android:id="@+id/STo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/etSurname"
+        app:layout_constraintTop_toTopOf="@+id/textViewTo" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Amount To Convert"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewTo"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTo" />
+
+    <EditText
+        android:id="@+id/etSurname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:inputType="textPersonName|number"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toTopOf="@+id/textView21"
+        app:layout_constraintVertical_bias="0.21" />
+
+    <Button
+        android:id="@+id/bCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cancel"
+        app:layout_constraintStart_toStartOf="@+id/finalValue"
+        app:layout_constraintTop_toBottomOf="@+id/finalValue" />
+
+    <Button
+        android:id="@+id/bSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+
+        android:text="Convert"
+        app:layout_constraintBottom_toBottomOf="@+id/bCancel"
+        app:layout_constraintStart_toEndOf="@+id/bCancel"
+        app:layout_constraintTop_toTopOf="@+id/bCancel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="To"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewFrom"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFrom" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="EUR/USD"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewFrom"
+        app:layout_constraintStart_toStartOf="@+id/STo"
+        app:layout_constraintTop_toTopOf="@+id/textViewFrom" />
+
+    <TextView
+        android:id="@+id/finalValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Value:"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+
+</android.support.constraint.ConstraintLayout>
