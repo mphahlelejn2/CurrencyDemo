@@ -22,6 +22,4 @@ public class CurrencyConversionActivity extends AppCompatActivity {
             ActivityUtils.addFragment(fragmentManager, currencyConversionFragment,R.id.fragment);
         }
     }
-
-
 }

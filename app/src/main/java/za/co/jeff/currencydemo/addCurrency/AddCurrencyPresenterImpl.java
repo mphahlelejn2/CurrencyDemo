@@ -5,9 +5,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.util.Map;
+
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableMaybeObserver;
 import okhttp3.ResponseBody;
@@ -25,9 +24,8 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
     private BaseSchedulerProvider provider;
     private IAddCurrency.View view;
     private IRoomRepository roomRepository;
-    private Map<String,Double> recentCurrencyUpdates;
 
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    private CompositeDisposable compositeDisposable=new CompositeDisposable();
 
 
     public AddCurrencyPresenterImpl(IAddCurrency.View view, IOnlineRepository repository,IRoomRepository roomRepository, BaseSchedulerProvider provider) {
@@ -39,7 +37,7 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
 
     @Override
     public void getListOfCurrencyFromOnline() {
-        Disposable disposable=repository.onlineCurrencyListAndDescriptions()
+        compositeDisposable.add(repository.onlineCurrencyListAndDescriptions()
                 .subscribeOn(provider.io()).observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<Response<ResponseBody>>(){
 
@@ -67,31 +65,31 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
                     @Override
                     public void onComplete() {
                         Log.d("","");
-                    }
-                });
+                        }})
+        );
 
-        compositeDisposable.add(disposable);
+
     }
 
     @Override
     public void addCurrency(Currency currency) {
 
-        Disposable disposable= roomRepository.addCurrency(currency)
+        compositeDisposable.add(roomRepository.addCurrency(currency)
                 .subscribeOn(provider.io()).observeOn(provider.ui())
                 .subscribeWith(new DisposableCompletableObserver(){
                     @Override
                     public void onComplete() {
                         view.doneAddingCurrency(currency);
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
                     }
-                });
+                })
 
-        compositeDisposable.add(disposable);
+        );
+
     }
 
     @Override
@@ -102,15 +100,14 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
 
     @Override
     public boolean getCurrencyRecentValueByCode(String code) {
-        compositeDisposable.add(repository.onlineCurrencyValues(API_KEY)
+        compositeDisposable.add(repository.getAllOnlineCurrencyValues(API_KEY)
                 .subscribeOn(provider.io())
                 .observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<ServerRespond>() {
 
                     @Override
                     public void onSuccess(ServerRespond serverRespond) {
-                        recentCurrencyUpdates=serverRespond.getCurrencyListValues();
-                        view.sendBackRecentValue(recentCurrencyUpdates.get(code));
+                        view.sendBackRecentValue(serverRespond.getCurrencyListValues().get(code));
                     }
 
                     @Override
@@ -149,5 +146,10 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
                 })
 
         );
+    }
+
+    @Override
+    public void clear(){
+        compositeDisposable.clear();
     }
 }

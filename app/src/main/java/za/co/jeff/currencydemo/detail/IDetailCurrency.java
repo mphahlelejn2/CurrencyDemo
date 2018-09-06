@@ -9,11 +9,7 @@ import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.models.CurrencyRecord;
 
 public interface IDetailCurrency {
-    public interface View {
-
-    }
-
-    public interface IDetailViewModel {
+    interface IDetailViewModel {
         LiveData<List<CurrencyRecord>> getListOfCurrencyRecordByCode(String code);
     }
 }

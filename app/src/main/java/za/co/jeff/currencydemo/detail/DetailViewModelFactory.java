@@ -28,5 +28,4 @@ public class DetailViewModelFactory implements ViewModelProvider.Factory {
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
-
 }

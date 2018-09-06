@@ -29,5 +29,5 @@ public interface ICurrencyDao {
     void addCurrency(Currency currency);
 
     @Query("Select * from " + Currency.CURRENCY+ " WHERE " + Currency.CURRENCY_CODE+ " = :key")
-    Maybe<Currency> getCurrencyBykey(String key);
+    Maybe<Currency> getCurrencyByKey(String key);
 }

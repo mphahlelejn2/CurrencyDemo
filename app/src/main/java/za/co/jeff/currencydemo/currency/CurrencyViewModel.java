@@ -21,15 +21,13 @@ public class CurrencyViewModel extends ViewModel implements ICurrency.ICurrencyV
     private IRoomRepository roomRepository;
     private BaseSchedulerProvider provider;
     private ICurrency.View view;
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
-
+    private CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     public CurrencyViewModel(ICurrency.View view, IRoomRepository roomRepository, BaseSchedulerProvider provider) {
         this.roomRepository = roomRepository;
         this.provider = provider;
         this.view = view;
     }
-
 
     @Override
     public LiveData<List<Currency>> getListOfCurrency() {
@@ -54,7 +52,4 @@ public class CurrencyViewModel extends ViewModel implements ICurrency.ICurrencyV
                 });
         compositeDisposable.add(disposable);
     }
-
-
-
 }

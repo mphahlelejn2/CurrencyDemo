@@ -38,16 +38,21 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
     @BindView(R.id.bSave)
     public Button save;
     private Map<String, Double> recentCurrencyUpdates;
-
     @Inject
     public ICurrencyConversion.Presenter presenter;
-
+    private ArrayAdapter<String> adapter;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.getCurrencyListValues();
         initOnclick();
+        adaptorInit();
+    }
+
+    private void adaptorInit() {
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -66,9 +71,8 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
             {
                 double value=recentCurrencyUpdates.get(toListSpinner.getSelectedItem().toString());
                 double inputValue= Double.parseDouble(this.inputValue.getText().toString());
-                double finalValueM=(inputValue/value);
-                DecimalFormat df = new DecimalFormat("0.000");
-                finalValue.setText("Value: "+df.format(finalValueM));
+                String results=presenter.getCurrencyConversionValue(inputValue,value);
+                finalValue.setText("Value: "+results);
             }
         });
         cancel.setOnClickListener(view -> {
@@ -82,8 +86,6 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
         this.recentCurrencyUpdates=recentCurrencyUpdates;
         List<String> list= new ArrayList<>();
         list.addAll(recentCurrencyUpdates.keySet());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.addAll(list);
         toListSpinner.setAdapter(adapter);
     }

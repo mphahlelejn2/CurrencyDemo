@@ -65,11 +65,4 @@ public class Currency {
         this.currencyDescription = currencyDescription;
     }
 
-    public ArrayList<Currency> getCurrencyArrayList() {
-        return currencyArrayList;
-    }
-
-    public void setCurrencyArrayList(ArrayList<Currency> currencyArrayList) {
-        this.currencyArrayList = currencyArrayList;
-    }
 }

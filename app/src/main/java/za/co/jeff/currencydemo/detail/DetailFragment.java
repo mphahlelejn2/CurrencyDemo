@@ -25,7 +25,7 @@ import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.models.CurrencyRecord;
 
 
-public class DetailFragment extends BaseFragment implements IDetailCurrency.View{
+public class DetailFragment extends BaseFragment implements IDetailCurrency{
 
     @BindView(R.id.tvCode)
     TextView code;

@@ -52,7 +52,7 @@ public class IRoomRepositoryImpl implements IRoomRepository {
 
     @Override
          public Maybe<Currency> getCurrencyBykey(String key){
-            return db.currencyDao().getCurrencyBykey(key);
+            return db.currencyDao().getCurrencyByKey(key);
         }
     }
 

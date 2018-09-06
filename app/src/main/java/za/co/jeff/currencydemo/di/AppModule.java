@@ -39,11 +39,6 @@ public class AppModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
                 .create(APIClient.class);
-      /* return new Retrofit.Builder()
-                .baseUrl(UrlManager.BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build().create(APIClient.class);*/
-
     }
 
     @Provides
@@ -71,6 +66,5 @@ public class AppModule {
     IRoomRepository getRoomRepository(Application_Database db){
         return new IRoomRepositoryImpl(db);
     }
-
 
 }

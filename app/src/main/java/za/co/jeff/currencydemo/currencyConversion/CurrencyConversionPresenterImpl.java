@@ -1,6 +1,7 @@
 package za.co.jeff.currencydemo.currencyConversion;
 
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableMaybeObserver;
@@ -31,7 +32,7 @@ public class CurrencyConversionPresenterImpl implements ICurrencyConversion.Pres
 
     @Override
     public boolean getCurrencyListValues() {
-        compositeDisposable.add(repository.onlineCurrencyValues(API_KEY)
+        compositeDisposable.add(repository.getAllOnlineCurrencyValues(API_KEY)
                 .subscribeOn(provider.io())
                 .observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<ServerRespond>() {
@@ -56,6 +57,13 @@ public class CurrencyConversionPresenterImpl implements ICurrencyConversion.Pres
         );
 
         return false;
+    }
+
+    @Override
+    public String getCurrencyConversionValue(double inputValue, double value) {
+        double finalValueM=(inputValue/value);
+        DecimalFormat df = new DecimalFormat("0.000");
+        return df.format(finalValueM);
     }
 
 }

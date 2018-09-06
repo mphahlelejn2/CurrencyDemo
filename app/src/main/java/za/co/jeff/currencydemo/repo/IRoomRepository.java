@@ -16,5 +16,4 @@ public interface IRoomRepository {
     Completable saveCurrencyRecord(CurrencyRecord currencyRecord);
     LiveData<List<CurrencyRecord>> getListOfCurrencyRecordByCode(String code);
     Maybe<Currency> getCurrencyBykey(String key);
-    //Maybe<List<Currency>> getListOfCurrencyData();
 }

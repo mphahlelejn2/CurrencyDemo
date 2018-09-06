@@ -20,9 +20,7 @@ public class OnlineRepositoryImpl implements IOnlineRepository {
     }
 
     @Override
-    public Maybe<ServerRespond> onlineCurrencyValues(String api_key) {
+    public Maybe<ServerRespond> getAllOnlineCurrencyValues(String api_key) {
         return apiClient.onlineCurrencyValues(api_key);
     }
-
-
 }

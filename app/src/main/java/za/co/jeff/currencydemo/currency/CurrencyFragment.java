@@ -22,17 +22,12 @@ import za.co.jeff.currencydemo.models.Currency;
 public class CurrencyFragment extends BaseFragment implements ICurrency.View {
 
     public CurrencyAdapter currencyAdapter;
-
     @BindView(R.id.recycler_view)
     public RecyclerView recyclerView;
-
-    protected ViewGroup container;
     @BindView(R.id.fab)
     public FloatingActionButton add;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
     private ICurrency.ICurrencyViewModel viewModel;
 
 
@@ -44,6 +39,9 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
         recyclerView.setAdapter(currencyAdapter);
         initAddNewUser();
         initViewModel();
+        Snackbar snackbar = Snackbar
+                .make(container, "Make sure you have internet connection", Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @Override

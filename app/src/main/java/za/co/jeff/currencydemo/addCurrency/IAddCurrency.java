@@ -17,10 +17,11 @@ public interface IAddCurrency {
     }
 
     public interface Presenter {
-        public abstract void getListOfCurrencyFromOnline();
+        void getListOfCurrencyFromOnline();
         void addCurrency(Currency currency);
         String getValueByKey(JSONObject jsonObject, String s) throws JSONException;
         boolean getCurrencyRecentValueByCode(String code);
         void addCurrencyRecord(CurrencyRecord currencyRecord);
+        void clear();
     }
 }

@@ -9,6 +9,5 @@ import za.co.jeff.currencydemo.models.ServerRespond;
 
 public interface IOnlineRepository {
     Maybe<Response<ResponseBody>> onlineCurrencyListAndDescriptions();
-    Maybe<ServerRespond> onlineCurrencyValues(String api_key);
-
+    Maybe<ServerRespond> getAllOnlineCurrencyValues(String api_key);
 }

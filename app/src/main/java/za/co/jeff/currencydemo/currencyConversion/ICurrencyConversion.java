@@ -1,22 +1,16 @@
 package za.co.jeff.currencydemo.currencyConversion;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Map;
-
-import za.co.jeff.currencydemo.models.Currency;
-import za.co.jeff.currencydemo.models.CurrencyRecord;
 
 public interface ICurrencyConversion {
 
-    public interface View {
-
+     interface View {
         void sendBackCurrencyListValues(Map<String, Double> recentCurrencyUpdates);
     }
 
-    public interface Presenter {
+     interface Presenter {
 
         boolean getCurrencyListValues();
+        String getCurrencyConversionValue(double inputValue, double value);
     }
 }

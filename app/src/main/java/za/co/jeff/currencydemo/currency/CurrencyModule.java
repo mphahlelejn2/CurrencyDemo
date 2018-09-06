@@ -17,8 +17,6 @@ public abstract class CurrencyModule {
     @Binds
     public  abstract ICurrency.View getView(CurrencyFragment currencyFragment);
 
-
-
     @Provides
     static ViewModelProvider.Factory provideFaceViewModelFactory(ICurrency.View view, IRoomRepository repository, BaseSchedulerProvider provider) {
         return new CurrencyViewModelFactory(view,repository,provider);

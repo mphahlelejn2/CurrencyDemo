@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import za.co.jeff.currencydemo.R;
@@ -27,7 +24,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.UserVi
     private List<Currency> currencyList;
     private ICurrency.View view;
     private ItemFilter mFilter = new ItemFilter();
-    private List<Currency> filteredData = null;
+    private List<Currency> filteredData;
 
     public CurrencyAdapter(ICurrency.View view, List<Currency> currencyList) {
         this.currencyList=currencyList;

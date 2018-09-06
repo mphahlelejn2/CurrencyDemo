@@ -22,6 +22,4 @@ public class DetailActivity extends AppCompatActivity {
             ActivityUtils.addFragment(fragmentManager, detailFragment,R.id.fragment);
         }
     }
-
-
 }

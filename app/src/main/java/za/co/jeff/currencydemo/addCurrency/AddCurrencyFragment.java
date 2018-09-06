@@ -36,6 +36,7 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
     public Button save;
     private Currency currency;
     private JSONObject jsonObject;
+    private ArrayAdapter<String> adapter;
 
     @Inject
     public IAddCurrency.Presenter presenter;
@@ -46,6 +47,12 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
         super.onViewCreated(view, savedInstanceState);
         presenter.getListOfCurrencyFromOnline();
         initOnclick();
+        adaptorInit();
+    }
+
+    private void adaptorInit() {
+         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -60,12 +67,8 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
     @Override
     public void sendBackResults(JSONObject ratesList) throws JSONException {
         jsonObject=ratesList;
-        List<String> list=UtilTool.getListFromJsonArray(ratesList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.addAll(list);
+        adapter.addAll(UtilTool.getListFromJsonArray(ratesList));
         currencyList.setAdapter(adapter);
-
     }
 
     private void initOnclick() {

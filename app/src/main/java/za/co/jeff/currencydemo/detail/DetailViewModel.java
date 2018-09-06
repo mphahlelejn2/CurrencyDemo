@@ -23,7 +23,6 @@ public class DetailViewModel extends ViewModel implements IDetailCurrency.IDetai
         this.roomRepository = roomRepository;
     }
 
-
     @Override
     public LiveData<List<CurrencyRecord>> getListOfCurrencyRecordByCode(String code) {
         return roomRepository.getListOfCurrencyRecordByCode(code);

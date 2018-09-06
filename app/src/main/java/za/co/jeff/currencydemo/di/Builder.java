@@ -15,6 +15,7 @@ import za.co.jeff.currencydemo.service.BackGroundDbUpdateJobService;
 
 @Module(includes = AndroidInjectionModule.class)
 public abstract class Builder {
+
     @PerActivity
     @ContributesAndroidInjector(modules = CurrencyModule.class)
     abstract CurrencyFragment bindCurrencyFragment();

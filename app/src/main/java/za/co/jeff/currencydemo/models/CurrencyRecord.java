@@ -13,7 +13,6 @@ import static za.co.jeff.currencydemo.models.CurrencyRecord.CURRENCYRECORD_DI;
         @Index(value = {CURRENCYRECORD_CODE,CURRENCYRECORD_DI})},
         foreignKeys = {@ForeignKey(entity = Currency.class, parentColumns = CURRENCY_CODE, childColumns = CURRENCYRECORD_CODE,onDelete = ForeignKey.CASCADE)}
         )
-
 public class CurrencyRecord {
 
     public static final String CURRENCYRECORD = "currencyRecord";
