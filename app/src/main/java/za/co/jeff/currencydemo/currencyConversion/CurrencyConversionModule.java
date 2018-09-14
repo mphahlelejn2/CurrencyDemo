@@ -15,7 +15,7 @@ public abstract class CurrencyConversionModule {
     public  abstract ICurrencyConversion.View getView(CurrencyConversionFragment currencyConversionFragment);
 
     @Provides
-    static ICurrencyConversion.Presenter getAddCurrencyPresenter(ICurrencyConversion.View view, IOnlineRepository repository, IRoomRepository roomRepository, BaseSchedulerProvider provider){
-        return new CurrencyConversionPresenterImpl(view,repository,roomRepository,provider);
+    static ICurrencyConversion.Presenter getAddCurrencyPresenter(ICurrencyConversion.View view, IOnlineRepository repository,  BaseSchedulerProvider provider){
+        return new CurrencyConversionPresenterImpl(view,repository,provider);
     }
 }

@@ -3,18 +3,17 @@ package za.co.jeff.currencydemo.util;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.models.CurrencyRecord;
-
 
 public class UtilTool {
 
@@ -23,20 +22,20 @@ public class UtilTool {
         return TextUtils.isEmpty(s);
     }
 
-    public static String getCurrentTimesStanp() {
+    public static String getCurrentTimesStamp() {
         return new Timestamp(System.currentTimeMillis()).toString();
     }
 
     public static CurrencyRecord generateCurrencyRecord(Currency currency,double value) {
         CurrencyRecord currencyRecord=new CurrencyRecord();
-        currencyRecord.setTimeStamp(UtilTool.getCurrentTimesStanp());
+        currencyRecord.setTimeStamp(UtilTool.getCurrentTimesStamp());
         currencyRecord.setName(currency.getCurrencyCode());
         currencyRecord.setValue(value);
         return currencyRecord;
 
     }
 
-    public static Currency generateCurrency(String selectedValue,String description,double value) {
+    public static Currency createCurrency(String selectedValue, String description, double value) {
         Currency currency=new Currency();
         currency.setCurrencyCode(selectedValue);
         currency.setCurrencyDescription(description);
@@ -44,12 +43,16 @@ public class UtilTool {
         return currency;
     }
 
-    public static List<String> getListFromJsonArray(JSONObject ratesList) throws JSONException {
-        JSONArray jsonArray = ratesList.names ();;
-        List<String> list=new ArrayList<>();
-        for (int i = 0; i < ratesList.length (); ++i) {
-            list.add(jsonArray.getString (i));
+    public static Map<String, String> convertToMap(JSONObject jsonObject) throws JSONException {
+        Map<String, String> map = new HashMap<>();
+        Iterator<String> keysItr = jsonObject.keys();
+       // if(keysItr!=null)
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            String value = (String) jsonObject.get(key);
+            map.put(key, value);
         }
-        return list;
+        return new TreeMap<>(map);
     }
+
 }

@@ -16,23 +16,20 @@ public class CurrencyConversionPresenterImpl implements ICurrencyConversion.Pres
     private IOnlineRepository repository;
     private BaseSchedulerProvider provider;
     private ICurrencyConversion.View view;
-    private IRoomRepository roomRepository;
     private Map<String,Double> recentCurrencyUpdates;
+    private CompositeDisposable compositeDisposable=new CompositeDisposable();
 
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
 
-
-    public CurrencyConversionPresenterImpl(ICurrencyConversion.View view, IOnlineRepository repository, IRoomRepository roomRepository, BaseSchedulerProvider provider) {
+    public CurrencyConversionPresenterImpl(ICurrencyConversion.View view, IOnlineRepository repository, BaseSchedulerProvider provider) {
         this.repository = repository;
         this.provider = provider;
         this.view = view;
-        this.roomRepository=roomRepository;
     }
 
 
     @Override
-    public boolean getCurrencyListValues() {
-        compositeDisposable.add(repository.getAllOnlineCurrencyValues(API_KEY)
+    public boolean getOnlineCurrencyValues() {
+        compositeDisposable.add(repository.getOnlineCurrencyValues(API_KEY)
                 .subscribeOn(provider.io())
                 .observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<ServerRespond>() {
@@ -45,12 +42,12 @@ public class CurrencyConversionPresenterImpl implements ICurrencyConversion.Pres
 
                     @Override
                     public void onError(Throwable e) {
-
-                        e.printStackTrace();
+                        view.errorGettingOnlineCurrencyValues();
                     }
 
                     @Override
                     public void onComplete(){
+                        view.emptyOnlineCurrencyValues();
                     }
                 })
 
@@ -60,8 +57,8 @@ public class CurrencyConversionPresenterImpl implements ICurrencyConversion.Pres
     }
 
     @Override
-    public String getCurrencyConversionValue(double inputValue, double value) {
-        double finalValueM=(inputValue/value);
+    public String getCurrencyConversionValue(double inputValue, double choiceCurrencyValue) {
+        double finalValueM=(inputValue/choiceCurrencyValue)+((inputValue/choiceCurrencyValue)*0.07);
         DecimalFormat df = new DecimalFormat("0.000");
         return df.format(finalValueM);
     }

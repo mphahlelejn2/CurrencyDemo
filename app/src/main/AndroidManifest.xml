@@ -18,7 +18,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,9 +25,11 @@
             android:parentActivityName=".currency.CurrencyActivity"
             android:label="Add Currency"
             />
-        <activity android:name=".detail.DetailActivity"
-            android:parentActivityName=".currency.CurrencyActivity"
+        <activity
             android:label="Detail Page"
+            android:name=".detail.DetailActivity"
+            android:parentActivityName=".currency.CurrencyActivity"
+
             />
         <activity android:name=".currencyConversion.CurrencyConversionActivity"
             android:parentActivityName=".currency.CurrencyActivity"

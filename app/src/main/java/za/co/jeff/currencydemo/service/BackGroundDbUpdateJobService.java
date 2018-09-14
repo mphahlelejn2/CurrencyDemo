@@ -1,6 +1,8 @@
 package za.co.jeff.currencydemo.service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import za.co.jeff.currencydemo.util.UtilTool;
 import static za.co.jeff.currencydemo.repo.UrlManager.API_KEY;
 
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class BackGroundDbUpdateJobService extends JobService {
 
     @Inject
@@ -41,7 +44,7 @@ public class BackGroundDbUpdateJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
 
-        compositeDisposable.add(repository.getAllOnlineCurrencyValues(API_KEY)
+        compositeDisposable.add(repository.getOnlineCurrencyValues(API_KEY)
                 .subscribeOn(scheduler.io())
                 .observeOn(scheduler.ui())
                 .subscribeWith(new DisposableMaybeObserver<ServerRespond>() {
@@ -107,7 +110,7 @@ public class BackGroundDbUpdateJobService extends JobService {
 
                     @Override
                     public void onSuccess(Currency currency) {
-                        if(currency.getWarningValue()>value)
+                        if(currency.getWarningValue()>=value)
                             Notification.sendNotification(getApplicationContext());
                     }
 
@@ -127,7 +130,7 @@ public class BackGroundDbUpdateJobService extends JobService {
     }
 
     private void saveCurrencyRecord(CurrencyRecord currencyRecord) {
-        compositeDisposable.add(roomRepository.saveCurrencyRecord(currencyRecord).subscribeOn(scheduler.io())
+        compositeDisposable.add(roomRepository.addCurrencyRecord(currencyRecord).subscribeOn(scheduler.io())
                 .observeOn(scheduler.ui()).subscribeWith(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {

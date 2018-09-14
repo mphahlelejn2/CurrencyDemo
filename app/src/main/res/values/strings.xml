@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="action_conversion">Currency Conversion</string>
     <string name="default_notification_channel_id">default</string>
+    <string name="instruction">App features include offline and realtime.Use FAB to add new currency and swipe to delete existing currencies</string>
 </resources>

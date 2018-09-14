@@ -12,12 +12,9 @@ import za.co.jeff.currencydemo.rxjava.BaseSchedulerProvider;
 @Singleton
 public class CurrencyViewModelFactory implements ViewModelProvider.Factory {
 
-    @Inject
+
     public IRoomRepository repository;
-    @Inject
     public BaseSchedulerProvider provider;
-
-
     public ICurrency.View view;
 
     public CurrencyViewModelFactory(ICurrency.View view, IRoomRepository repository, BaseSchedulerProvider provider) {

@@ -2,6 +2,7 @@ package za.co.jeff.currencydemo.currency;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,6 +31,7 @@ public class CurrencyActivity extends BaseActivity {
             currencyFragment = CurrencyFragment.getInstance();
             ActivityUtils.addFragment(fragmentManager, currencyFragment,R.id.fragment);
         }
+
     }
 
     @Override

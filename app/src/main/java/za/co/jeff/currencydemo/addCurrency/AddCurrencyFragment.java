@@ -2,20 +2,24 @@ package za.co.jeff.currencydemo.addCurrency;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 import butterknife.BindView;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import za.co.jeff.currencydemo.R;
 import za.co.jeff.currencydemo.base.BaseFragment;
 import za.co.jeff.currencydemo.models.Currency;
@@ -35,7 +39,7 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
     @BindView(R.id.bSave)
     public Button save;
     private Currency currency;
-    private JSONObject jsonObject;
+    Map<String, String> listOfCurrency;
     private ArrayAdapter<String> adapter;
 
     @Inject
@@ -45,14 +49,15 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getListOfCurrencyFromOnline();
+        presenter.getListOfCurrencyAndDescriptionsFromOnline();
         initOnclick();
         adaptorInit();
+        getActivity().setTitle("");
     }
 
     private void adaptorInit() {
          adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -65,53 +70,89 @@ public class AddCurrencyFragment extends BaseFragment implements IAddCurrency.Vi
     }
 
     @Override
-    public void sendBackResults(JSONObject ratesList) throws JSONException {
-        jsonObject=ratesList;
-        adapter.addAll(UtilTool.getListFromJsonArray(ratesList));
+    public void loadListOfCurrencyFromOnline(JSONObject ratesList) throws JSONException {
+        listOfCurrency = UtilTool.convertToMap( ratesList);
+        adapter.addAll(listOfCurrency.keySet());
         currencyList.setAdapter(adapter);
     }
 
     private void initOnclick() {
         save.setOnClickListener(view -> {
-              if(!UtilTool.isEmpty(warningValue))
-            {
-                try {
-                    String selectedValue=currencyList.getSelectedItem().toString();
-                    String description= presenter.getValueByKey(jsonObject,currencyList.getSelectedItem().toString());
-                    Currency currency=  UtilTool.generateCurrency(selectedValue,description, Double.parseDouble(warningValue.getText().toString()));
-                    presenter.addCurrency(currency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+           saveCurrencyValues();
         });
         cancel.setOnClickListener(view -> {
          getActivity().finish();
         });
     }
 
+    private void saveCurrencyValues() {
 
-    @Override
-    public void doneAddingCurrency(Currency currency) {
-        this.currency=currency;
-        presenter.getCurrencyRecentValueByCode(currency.getCurrencyCode());
+        if(!UtilTool.isEmpty(warningValue))
+        {
+            String selectedValue=currencyList.getSelectedItem().toString();
+            String description= listOfCurrency.get(selectedValue);
+            double warning=Double.parseDouble(warningValue.getText().toString());
+            Currency currency=  UtilTool.createCurrency(selectedValue,description, warning);
+            presenter.addCurrency(currency);
+        }
     }
 
 
+    @Override
+    public void currencyAdded(Currency currency) {
+        this.currency=currency;
+        presenter.getOnlineCurrencyValueByCode(currency.getCurrencyCode());
+    }
 
     @Override
-    public void doneAddingCurrencyRecord() {
+    public void addedCurrencyRecord() {
         getActivity().finish();
     }
 
     @Override
-    public void sendBackRecentValue(Double value) {
+    public void returnCurrencyValue(Double value) {
         CurrencyRecord currencyRecord= UtilTool.generateCurrencyRecord(currency,value);
         presenter.addCurrencyRecord(currencyRecord);
     }
 
     @Override
-    public void pleaseCheckInternet() {
-        Toast.makeText(getActivity(),"Please check your internet",Toast.LENGTH_SHORT).show();
+    public void errorLoadingOnlineCurrencyList() {
+        makeSnackBar("Please check your internet");
+    }
+
+    @Override
+    public void emptyOnlineCurrencyList() {
+        makeSnackBar("Empty list");
+    }
+
+    @Override
+    public void errorAddingCurrency() {
+        makeSnackBar("Error Adding Currency");
+    }
+
+    @Override
+    public void errorGettingCurrencyValue() {
+        makeSnackBar("Error getting Currency Value");
+    }
+
+    @Override
+    public void emptyCurrencyValue() {
+        makeSnackBar("Empty value");
+    }
+
+    @Override
+    public void errorAddingCurrencyRecord() {
+        makeSnackBar("Error adding currency record");
+    }
+
+    @Override
+    public void loadCurrencyRespondsFromOnline(Response<ResponseBody> respondsSuccess) {
+        presenter.getJSONObject(respondsSuccess);
+    }
+
+    private void makeSnackBar(String s) {
+        Snackbar snackbar = Snackbar
+                .make(container, s, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }

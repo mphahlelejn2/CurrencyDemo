@@ -55,8 +55,4 @@ abstract public class BaseFragment extends Fragment{
         getActivity().setTitle(R.string.app_name);
     }
     protected abstract int getFragmentLayout();
-
-
-
-
 }

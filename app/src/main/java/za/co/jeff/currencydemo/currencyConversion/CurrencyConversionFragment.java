@@ -2,6 +2,7 @@ package za.co.jeff.currencydemo.currencyConversion;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -9,9 +10,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import za.co.jeff.currencydemo.R;
 import za.co.jeff.currencydemo.base.BaseFragment;
-import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.util.UtilTool;
 
 
@@ -37,7 +34,7 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
     public Button cancel;
     @BindView(R.id.bSave)
     public Button save;
-    private Map<String, Double> recentCurrencyUpdates;
+    private Map<String, Double> currencyInfo;
     @Inject
     public ICurrencyConversion.Presenter presenter;
     private ArrayAdapter<String> adapter;
@@ -45,9 +42,10 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getCurrencyListValues();
+        presenter.getOnlineCurrencyValues();
         initOnclick();
         adaptorInit();
+        getActivity().setTitle("");
     }
 
     private void adaptorInit() {
@@ -69,9 +67,10 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
         save.setOnClickListener(view -> {
               if(!UtilTool.isEmpty(this.inputValue))
             {
-                double value=recentCurrencyUpdates.get(toListSpinner.getSelectedItem().toString());
+                String selectedValue=toListSpinner.getSelectedItem().toString();
+                double USDValue= currencyInfo.get(selectedValue);
                 double inputValue= Double.parseDouble(this.inputValue.getText().toString());
-                String results=presenter.getCurrencyConversionValue(inputValue,value);
+                String results=presenter.getCurrencyConversionValue(inputValue,USDValue);
                 finalValue.setText("Value: "+results);
             }
         });
@@ -80,13 +79,34 @@ public class CurrencyConversionFragment extends BaseFragment implements ICurrenc
         });
     }
 
-
     @Override
-    public void sendBackCurrencyListValues(Map<String, Double> recentCurrencyUpdates) {
-        this.recentCurrencyUpdates=recentCurrencyUpdates;
+    public void sendBackCurrencyListValues(Map<String, Double> currencyInfo) {
+        this.currencyInfo =currencyInfo;
         List<String> list= new ArrayList<>();
-        list.addAll(recentCurrencyUpdates.keySet());
+        list.addAll(currencyInfo.keySet());
         adapter.addAll(list);
         toListSpinner.setAdapter(adapter);
     }
+
+    @Override
+    public void errorGettingOnlineCurrencyValues() {
+        makeSnackBar("Error getting online Values");
+    }
+
+    @Override
+    public void emptyOnlineCurrencyValues() {
+        makeSnackBar("Empty Values");
+    }
+
+    @Override
+    public double getChoiceCurrencyValue(String choice) {
+        return currencyInfo.get(choice);
+    }
+
+    private void makeSnackBar(String s) {
+        Snackbar snackbar = Snackbar
+                .make(container, s, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
 }

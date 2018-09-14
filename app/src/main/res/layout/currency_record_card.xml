@@ -9,9 +9,9 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:cardMaxElevation="6dp"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="1dp"
+        app:cardMaxElevation="1dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/spots_dialog_color">
+           >
 
             <TextView
                 android:id="@+id/times_Stamp"
@@ -44,14 +44,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="8dp"
                 android:text="TextView"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintStart_toEndOf="@+id/times_Stamp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/times_Stamp"
+                app:layout_constraintVertical_bias="0.0"
                 tools:ignore="RtlCompat,UnknownId" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/times_Stamp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/images" />
 
 
         </android.support.constraint.ConstraintLayout>

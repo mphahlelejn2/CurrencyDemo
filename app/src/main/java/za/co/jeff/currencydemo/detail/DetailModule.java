@@ -15,7 +15,6 @@ import za.co.jeff.currencydemo.rxjava.BaseSchedulerProvider;
 @Module
 public abstract class DetailModule {
 
-
     @Provides
     static ViewModelProvider.Factory provideDetailViewModelFactory( IRoomRepository repository) {
         return new DetailViewModelFactory(repository);

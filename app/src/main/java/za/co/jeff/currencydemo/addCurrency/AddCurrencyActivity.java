@@ -21,6 +21,4 @@ public class AddCurrencyActivity extends AppCompatActivity {
             ActivityUtils.addFragment(fragmentManager, addCurrencyFragment,R.id.fragment);
         }
     }
-
-
 }

@@ -1,7 +1,5 @@
 package za.co.jeff.currencydemo.addCurrency;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -18,53 +16,43 @@ import za.co.jeff.currencydemo.repo.IOnlineRepository;
 import za.co.jeff.currencydemo.repo.IRoomRepository;
 import za.co.jeff.currencydemo.rxjava.BaseSchedulerProvider;
 import static za.co.jeff.currencydemo.repo.UrlManager.API_KEY;
+
+
 public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
 
-    private IOnlineRepository repository;
+    private IOnlineRepository onlineRepository;
     private BaseSchedulerProvider provider;
     private IAddCurrency.View view;
     private IRoomRepository roomRepository;
-
     private CompositeDisposable compositeDisposable=new CompositeDisposable();
 
 
-    public AddCurrencyPresenterImpl(IAddCurrency.View view, IOnlineRepository repository,IRoomRepository roomRepository, BaseSchedulerProvider provider) {
-        this.repository = repository;
+    public AddCurrencyPresenterImpl(IAddCurrency.View view, IOnlineRepository onlineRepository, IRoomRepository roomRepository, BaseSchedulerProvider provider) {
+        this.onlineRepository = onlineRepository;
         this.provider = provider;
         this.view = view;
         this.roomRepository=roomRepository;
     }
 
     @Override
-    public void getListOfCurrencyFromOnline() {
-        compositeDisposable.add(repository.onlineCurrencyListAndDescriptions()
+    public void getListOfCurrencyAndDescriptionsFromOnline() {
+        compositeDisposable.add(onlineRepository.getListOfCurrencyAndDescriptionsFromOnline()
                 .subscribeOn(provider.io()).observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<Response<ResponseBody>>(){
 
                     @Override
                     public void onSuccess(Response<ResponseBody> responseBodyResponse) {
-
-                        String responseRecieved = null;
-                        try {
-                            responseRecieved = responseBodyResponse.body().string();
-                            JSONObject jsonObject = new JSONObject(responseRecieved);
-                            view.sendBackResults(jsonObject );
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        view.loadCurrencyRespondsFromOnline(responseBodyResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                     Log.d("", e.toString());
-                     view.pleaseCheckInternet();
+                     view.errorLoadingOnlineCurrencyList();
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d("","");
+                        view.emptyOnlineCurrencyList();
                         }})
         );
 
@@ -74,17 +62,17 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
     @Override
     public void addCurrency(Currency currency) {
 
-        compositeDisposable.add(roomRepository.addCurrency(currency)
+        compositeDisposable.add(roomRepository.addCurrencyToDatabase(currency)
                 .subscribeOn(provider.io()).observeOn(provider.ui())
                 .subscribeWith(new DisposableCompletableObserver(){
                     @Override
                     public void onComplete() {
-                        view.doneAddingCurrency(currency);
+                        view.currencyAdded(currency);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                     view.errorAddingCurrency();
                     }
                 })
 
@@ -92,32 +80,28 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
 
     }
 
-    @Override
-    public String getValueByKey(JSONObject jsonObject, String s) throws JSONException {
-        return (String) jsonObject.get(s);
-    }
-
 
     @Override
-    public boolean getCurrencyRecentValueByCode(String code) {
-        compositeDisposable.add(repository.getAllOnlineCurrencyValues(API_KEY)
+    public boolean getOnlineCurrencyValueByCode(String code) {
+        compositeDisposable.add(onlineRepository.getOnlineCurrencyValues(API_KEY)
                 .subscribeOn(provider.io())
                 .observeOn(provider.ui())
                 .subscribeWith(new DisposableMaybeObserver<ServerRespond>() {
 
                     @Override
                     public void onSuccess(ServerRespond serverRespond) {
-                        view.sendBackRecentValue(serverRespond.getCurrencyListValues().get(code));
+                        view.returnCurrencyValue(serverRespond.getCurrencyListValues().get(code));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                      view.errorGettingCurrencyValue();
                         e.printStackTrace();
                     }
 
                     @Override
                     public void onComplete(){
+                        view.emptyCurrencyValue();
                     }
                 })
 
@@ -129,19 +113,19 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
 
     @Override
     public void addCurrencyRecord(CurrencyRecord currencyRecord) {
-        compositeDisposable.add(roomRepository.saveCurrencyRecord(currencyRecord)
+        compositeDisposable.add(roomRepository.addCurrencyRecord(currencyRecord)
                 .subscribeOn(provider.io())
                 .observeOn(provider.ui())
                 .subscribeWith(new DisposableCompletableObserver() {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        view.errorAddingCurrencyRecord();
                     }
 
                     @Override
                     public void onComplete(){
-                        view.doneAddingCurrencyRecord();
+                        view.addedCurrencyRecord();
                     }
                 })
 
@@ -151,5 +135,18 @@ public class AddCurrencyPresenterImpl implements IAddCurrency.Presenter {
     @Override
     public void clear(){
         compositeDisposable.clear();
+    }
+
+    @Override
+    public void getJSONObject(Response<ResponseBody> responseBodyResponse) {
+        try {
+            String responseRecieved = responseBodyResponse.body().string();
+            JSONObject jsonObject = new JSONObject(responseRecieved);
+            view.loadListOfCurrencyFromOnline(jsonObject );
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

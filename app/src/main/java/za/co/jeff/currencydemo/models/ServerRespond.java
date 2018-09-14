@@ -1,6 +1,8 @@
 package za.co.jeff.currencydemo.models;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -8,10 +10,10 @@ import okhttp3.ResponseBody;
 public class ServerRespond {
 
     @SerializedName("rates")
-    private Map<String, Double> currencyListValues;
+    private Map<String, Double> currencyListValues=new HashMap<>();
 
     @SerializedName("body")
-    private Map<String,String> currencyListAndDescription;
+    private Map<String,String> currencyListAndDescription=new HashMap<>();
 
     @SerializedName("base")
     private String USD;

@@ -8,6 +8,6 @@ import retrofit2.Response;
 import za.co.jeff.currencydemo.models.ServerRespond;
 
 public interface IOnlineRepository {
-    Maybe<Response<ResponseBody>> onlineCurrencyListAndDescriptions();
-    Maybe<ServerRespond> getAllOnlineCurrencyValues(String api_key);
+    Maybe<Response<ResponseBody>> getListOfCurrencyAndDescriptionsFromOnline();
+    Maybe<ServerRespond> getOnlineCurrencyValues(String api_key);
 }

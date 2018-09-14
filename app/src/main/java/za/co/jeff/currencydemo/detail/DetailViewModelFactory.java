@@ -14,7 +14,6 @@ import za.co.jeff.currencydemo.rxjava.BaseSchedulerProvider;
 @Singleton
 public class DetailViewModelFactory implements ViewModelProvider.Factory {
 
-    @Inject
     public IRoomRepository repository;
 
     public DetailViewModelFactory(IRoomRepository repository) {

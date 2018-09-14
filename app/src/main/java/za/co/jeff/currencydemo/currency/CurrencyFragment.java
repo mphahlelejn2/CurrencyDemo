@@ -9,7 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import javax.inject.Inject;
 import butterknife.BindView;
@@ -26,6 +27,8 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
     public RecyclerView recyclerView;
     @BindView(R.id.fab)
     public FloatingActionButton add;
+    @BindView(R.id.instruction)
+    public TextView instruction;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private ICurrency.ICurrencyViewModel viewModel;
@@ -39,9 +42,6 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
         recyclerView.setAdapter(currencyAdapter);
         initAddNewUser();
         initViewModel();
-        Snackbar snackbar = Snackbar
-                .make(container, "Make sure you have internet connection", Snackbar.LENGTH_LONG);
-        snackbar.show();
     }
 
     @Override
@@ -61,6 +61,20 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
         startActivity(i);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initSetup();
+    }
+
+
+    @Override
+    public void initSetup() {
+        if(currencyAdapter.getItemCount()!=0)
+            disableInstruction();
+        else
+            enableInstruction();
+    }
 
     private void initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyViewModel.class);
@@ -75,7 +89,6 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
         recyclerView.setLayoutManager(manager);
     }
 
-
     @Override
     public RecyclerView getRecyclerView() {
         return recyclerView;
@@ -88,46 +101,53 @@ public class CurrencyFragment extends BaseFragment implements ICurrency.View {
 
     @Override
     public void doneDeletingCurrency() {
-
+        makeSnackBar("Done Deleting currency");
     }
 
     @Override
     public void doneAddingCurrency() {
-
+        makeSnackBar("Done adding Currency");
     }
 
     @Override
     public void deleteCurrency(Currency currency) {
-        viewModel.deleteCurrency(currency);
+        viewModel.deleteCurrencyFromDatabase(currency);
     }
 
 
     @Override
     public void emptyList() {
-        Snackbar snackbar = Snackbar
-                .make(container, "Photos List is Empty", Snackbar.LENGTH_LONG);
-        snackbar.show();
+        makeSnackBar("Photos List is Empty");
     }
 
     @Override
     public void errorLoadingImages() {
-        Snackbar snackbar = Snackbar
-                .make(container, "Error loading Photos . Please Check your Network", Snackbar.LENGTH_LONG);
-        snackbar.show();
+        makeSnackBar("Error loading Photos . Please Check your Network");
     }
 
+    @Override
+    public void disableInstruction() {
+        instruction.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void enableInstruction() {
+        instruction.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void errorDeletingCurrency() {
+        makeSnackBar("Error Deleting Currency");
+    }
 
     public static CurrencyFragment getInstance() {
         return new CurrencyFragment();
     }
-    @Override
-    public void dismissLoadDialog() {
-        loadPhotosProgressDialog.dismiss();
+
+    private void makeSnackBar(String s) {
+        Snackbar snackbar = Snackbar
+                .make(container, s, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
-    @Override
-    public void initLoadProgressDialog() {
-        loadPhotosProgressDialog =new SpotsDialog(getActivity(), "Loading local db ....");
-        loadPhotosProgressDialog.show();
-    }
 }

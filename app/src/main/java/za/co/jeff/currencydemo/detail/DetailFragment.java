@@ -49,6 +49,7 @@ public class DetailFragment extends BaseFragment implements IDetailCurrency{
         recyclerView.setAdapter(currencyTrackAdapter);
         initViewModel();
         code.setText(currency.getCurrencyCode());
+        getActivity().setTitle("");
     }
 
     private void initViewModel() {

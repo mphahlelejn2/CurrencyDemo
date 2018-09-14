@@ -10,10 +10,10 @@ import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.models.CurrencyRecord;
 
 public interface IRoomRepository {
-    Completable deleteCurrency(Currency currency);
+    Completable deleteCurrencyFromDatabase(Currency currency);
     LiveData<List<Currency>> getListOfCurrency();
-    Completable addCurrency(Currency currency);
-    Completable saveCurrencyRecord(CurrencyRecord currencyRecord);
+    Completable addCurrencyToDatabase(Currency currency);
+    Completable addCurrencyRecord(CurrencyRecord currencyRecord);
     LiveData<List<CurrencyRecord>> getListOfCurrencyRecordByCode(String code);
     Maybe<Currency> getCurrencyBykey(String key);
 }

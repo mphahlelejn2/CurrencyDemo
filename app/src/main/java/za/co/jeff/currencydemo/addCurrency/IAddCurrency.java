@@ -3,25 +3,33 @@ package za.co.jeff.currencydemo.addCurrency;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import za.co.jeff.currencydemo.models.Currency;
 import za.co.jeff.currencydemo.models.CurrencyRecord;
 
 public interface IAddCurrency {
 
-    public interface View {
-        void sendBackResults(JSONObject ratesList) throws JSONException;
-        void doneAddingCurrency(Currency currencyCode);
-        void doneAddingCurrencyRecord();
-        void sendBackRecentValue(Double aDouble);
-        void pleaseCheckInternet();
-    }
+     interface View {
+        void loadListOfCurrencyFromOnline(JSONObject ratesList) throws JSONException;
+        void currencyAdded(Currency currencyCode);
+        void addedCurrencyRecord();
+        void returnCurrencyValue(Double aDouble);
+        void errorLoadingOnlineCurrencyList();
+        void emptyOnlineCurrencyList();
+        void errorAddingCurrency();
+        void errorGettingCurrencyValue();
+        void emptyCurrencyValue();
+        void errorAddingCurrencyRecord();
+        void loadCurrencyRespondsFromOnline(Response<ResponseBody> respondsSuccess);
+     }
 
-    public interface Presenter {
-        void getListOfCurrencyFromOnline();
+      interface Presenter {
+        void getListOfCurrencyAndDescriptionsFromOnline();
         void addCurrency(Currency currency);
-        String getValueByKey(JSONObject jsonObject, String s) throws JSONException;
-        boolean getCurrencyRecentValueByCode(String code);
+        boolean getOnlineCurrencyValueByCode(String code);
         void addCurrencyRecord(CurrencyRecord currencyRecord);
-        void clear();
+          void clear();
+          void getJSONObject(Response<ResponseBody> responseBodyResponse);
     }
 }

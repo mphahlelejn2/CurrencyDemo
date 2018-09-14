@@ -15,12 +15,12 @@ public class OnlineRepositoryImpl implements IOnlineRepository {
     }
 
     @Override
-    public  Maybe<Response<ResponseBody>> onlineCurrencyListAndDescriptions() {
+    public  Maybe<Response<ResponseBody>> getListOfCurrencyAndDescriptionsFromOnline() {
         return apiClient.onlineCurrencyListAndDescriptions();
     }
 
     @Override
-    public Maybe<ServerRespond> getAllOnlineCurrencyValues(String api_key) {
+    public Maybe<ServerRespond> getOnlineCurrencyValues(String api_key) {
         return apiClient.onlineCurrencyValues(api_key);
     }
 }

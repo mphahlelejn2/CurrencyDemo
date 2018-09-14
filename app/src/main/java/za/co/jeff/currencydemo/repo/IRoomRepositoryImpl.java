@@ -17,7 +17,7 @@ public class IRoomRepositoryImpl implements IRoomRepository {
     }
 
     @Override
-    public Completable deleteCurrency(Currency currency) {
+    public Completable deleteCurrencyFromDatabase(Currency currency) {
         return Completable.create(emitter -> {
             db.currencyDao().deleteCurrency(currency);
             emitter.onComplete();
@@ -30,7 +30,7 @@ public class IRoomRepositoryImpl implements IRoomRepository {
     }
 
     @Override
-    public Completable addCurrency(Currency currency) {
+    public Completable addCurrencyToDatabase(Currency currency) {
         return Completable.create(emitter -> {
             db.currencyDao().addCurrency(currency);
             emitter.onComplete();
@@ -38,7 +38,7 @@ public class IRoomRepositoryImpl implements IRoomRepository {
     }
 
     @Override
-    public Completable saveCurrencyRecord(CurrencyRecord currencyRecord) {
+    public Completable addCurrencyRecord(CurrencyRecord currencyRecord) {
         return Completable.create(emitter -> {
             db.currencyRecordDao().addCurrencyRecord(currencyRecord);
             emitter.onComplete();

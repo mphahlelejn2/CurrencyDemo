@@ -36,7 +36,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.UserVi
 
     @Override
     public CurrencyAdapter.UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       View card= LayoutInflater.from(parent.getContext()).inflate(R.layout.news_story_card,parent,false);
+       View card= LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_story_card,parent,false);
         return new CurrencyAdapter.UserViewHolder(card);
     }
 
@@ -69,6 +69,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.UserVi
     public void addCurrency(List<Currency> list) {
         this.currencyList = list;
        this.filteredData= list;
+       view.initSetup();
         notifyDataSetChanged();
     }
 
